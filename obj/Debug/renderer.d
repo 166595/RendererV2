@@ -829,7 +829,8 @@ obj/Debug/renderer.o: src/renderer.cpp src/renderer.h src/FileInterface.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/quaternion.h \
-  src/MiniFValue.h src/Triangles.h src/Shaders.h \
+  src/Triangles.h src/Shaders.h src/Mesh.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/thread
 
 src/renderer.h:
@@ -2496,10 +2497,12 @@ src/RenderTypes.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/quaternion.h:
 
-src/MiniFValue.h:
-
 src/Triangles.h:
 
 src/Shaders.h:
+
+src/Mesh.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/thread:

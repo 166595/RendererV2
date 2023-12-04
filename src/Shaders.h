@@ -18,8 +18,7 @@
    } // extern "C"
 #endif
 
-   Vertex VertexShader(Vertex vertex);
-   void FragmentShader(float x, float y, Color &color);
-   Color TriangleFragment(const ShaderTriangle &triangle, float x, float y);
+   void TriangleShader(Triangle &triangle, simd::float4x4 &rotationMatrix);
+   Color FragmentShader(const ShaderTriangle &triangle, float x, float y);
 
 #endif

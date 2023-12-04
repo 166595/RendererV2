@@ -8,23 +8,15 @@
 #include <iostream>
 #include "RenderTypes.h"
 
-// In most senarios, SIMD_X will make a huge improvement
-// SIMD_X Will affect functions that are called T*R*R times
-
-// In most senarios, SIMD_Y will make a little difference and may have a negative impact on performance
-// SIMD_Y Will affect functions that are called T*R times
-
-#define SIMD
-
 enum StepIndex{
     XBCoordStepIndex = 0,
     YBCoordStepIndex = 1,
-    _SpacerA = 2,
-    _SpacerB = 3,
+    XUVStepIndex = 2,
+    YUVStepIndex = 3,
 
-    ColorRStepIndex = 4,
-    ColorGStepIndex = 5,
-    ColorBStepIndex = 6,
+    XNormalStepIndex = 4,
+    YNormalStepIndex = 5,
+    ZNormalStepIndex = 5,
     DepthStepIndex = 7
 };
 
@@ -39,75 +31,61 @@ typedef struct PreCalValue{
 
 typedef struct PreCalTriangle{
     PreCalTriangle() = default;
-    PreCalTriangle(Vertex vertices[3], int resolution);
-
-
-    // Triangle Bounds are in pixels (unsigned short)
-    // x,z = lowX,highX
-    // y,w = lowY,highY
+    PreCalTriangle(Triangle &triangle, int resolution);
     simd::ushort4 bounds;
-    simd::float4 normal;
     PreCalValue xBCoord;
     PreCalValue yBCoord;
+    PreCalValue xUV;
+    PreCalValue yUV;
+    PreCalValue xNormal;
+    PreCalValue yNormal;
+    PreCalValue zNormal;
     PreCalValue depth;
-    PreCalValue colorR;
-    PreCalValue colorG;
-    PreCalValue colorB;
-
+    unsigned int meshID;
 }PreCalTriangle;
 
 
 typedef struct ShaderTriangle{
     simd::float4 normal;
-    simd::float4 color;
+    simd::float2 uv;
+    unsigned int meshID;
 }ShaderTriangle;
 
 
 typedef struct SteppedTriangle{
 
     public:
-
-    const PreCalTriangle *pcTriangle;
+    unsigned int meshID;
+    simd::ushort4 bounds;
 
     alignas(16) std::array<float, 8> values;
     SteppedTriangle() = default;
-    SteppedTriangle(PreCalTriangle triangle, int resolution_, int threadCount, int threadIndex);
+    SteppedTriangle(PreCalTriangle triangle, int resolution_);
 
     void StepX();
     void StepY();
 
-    void SetX(int xp);
+    void SetX(int xSet);
+    void SetY(int ySet);
 
     private:
 
-    void SetConstants(int resolution_, int stepSizeY_, int offset_);
+    void SetConstants(int resolution_);
     void SetXValues(const std::array<PreCalValue, 8> &preCalValues);
     void SetYValues(const std::array<PreCalValue, 8> &preCalValues);
 
     // --- Step Values --- //
 
-    #ifdef SIMD
     float32x4x2_t v_deltaXs;
-        float32x4x2_t v_initials;
-        float32x4x2_t v_deltaYs;
-        float32x4x2_t v_valueYs;
-
-    #else
-        std::array<float, 8> deltaXs;
-        std::array<float, 8> initials;
-        std::array<float, 8> deltaYs;
-        std::array<float, 8> valueYs;
-    #endif
+    float32x4x2_t v_initials;
+    float32x4x2_t v_deltaYs;
+    float32x4x2_t v_valueYs;
 
     // --- Constants --- //
 
     float invRez;
 
     int resolution;
-
-    int stepSizeY;
-
-    int offset;
 
 }SteppedTriangle;
 

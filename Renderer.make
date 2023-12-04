@@ -71,15 +71,13 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/FileInterface.o
-GENERATED += $(OBJDIR)/MiniFValue.o
-GENERATED += $(OBJDIR)/RenderTypes.o
+GENERATED += $(OBJDIR)/Mesh.o
 GENERATED += $(OBJDIR)/Shaders.o
 GENERATED += $(OBJDIR)/Triangles.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/renderer.o
 OBJECTS += $(OBJDIR)/FileInterface.o
-OBJECTS += $(OBJDIR)/MiniFValue.o
-OBJECTS += $(OBJDIR)/RenderTypes.o
+OBJECTS += $(OBJDIR)/Mesh.o
 OBJECTS += $(OBJDIR)/Shaders.o
 OBJECTS += $(OBJDIR)/Triangles.o
 OBJECTS += $(OBJDIR)/main.o
@@ -150,10 +148,7 @@ endif
 $(OBJDIR)/FileInterface.o: src/FileInterface.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/MiniFValue.o: src/MiniFValue.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/RenderTypes.o: src/RenderTypes.cpp
+$(OBJDIR)/Mesh.o: src/Mesh.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shaders.o: src/Shaders.cpp

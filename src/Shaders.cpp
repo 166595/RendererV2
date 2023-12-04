@@ -1,58 +1,51 @@
 
 #include "Shaders.h"
+#include <simd/simd.h>
 
 #include <bit>
 
-Vertex VertexShader(Vertex vertex){
-    return vertex;
+simd::float4 Project(simd::float4 position, simd::float4x4 &projectionMatrix){
+    simd::float4 projected = projectionMatrix * position;
+    float Z = 1.0f;//5.0f / (5 - position.z);
+    projected.x *= Z;
+    projected.y *= Z;
+    return projected;
 }
 
-void FragmentShader(float x, float y, Color &color){
-    /*float cx = x * 1.1f - 0.25f;
-    float cy = y * 1.1f;
+void TriangleShader(Triangle &triangle, simd::float4x4 &rotationMatrix){
+    for(int i = 0; i < 3; i++){
+        triangle.vertices[i] = Project(triangle.vertices[i], rotationMatrix);
+        triangle.normals[i] =  Project(triangle.normals[i], rotationMatrix);
+    }
+}
 
-    // Initialize variables for Mandelbrot calculation
-    float zx = 0.0f, zy = 0.0f;
-    int iteration = 0, maxIterations = 1000;
+const simd::float4 _Yellow = (simd::float4){255.0f, 215.0f, 1.0f, 1.0f};
+const simd::float4 _Blue = (simd::float4){1.0f, 1.0f, 255.0f, 1.0f};
+const simd::float4 _Green = (simd::float4){1.0f, 255.0f, 1.0f, 1.0f};
+const simd::float4 _Red = (simd::float4){255.0f, 1.0f, 1.0f, 1.0f};
 
-    // Perform Mandelbrot calculation
-    while(zx * zx + zy * zy <= 4.0f && iteration < maxIterations) {
-        float tmp = zx * zx - zy * zy + cx;
-        zy = 2.0f * zx * zy + cy;
-        zx = tmp;
-        iteration++;
+simd::float4 Sample(simd::float2 uv, unsigned int meshID){
+    float V = floor(((2 + cos(uv.x * 256) * cos(uv.y * 256)))) / 3.0f;
+    return V * (simd::float4){255.0f, 255.0f, 255.0f, 255.0f};
+    /*switch(meshID%4){
+        case 0 : return (0.5f + V) * _Yellow;
+        case 1 : return (0.5f + V) * _Blue;
+        case 2 : return (0.5f + V) * _Green;
+        case 3 : return (0.5f + V) * _Red;
+        default: break;
     }
 
-    // Generate color based on the number of iterations
-    if(iteration == maxIterations) {
-        color = Color{0, 0, 0, 255}; // Black for points inside the Mandelbrot set
-    } else {
-        // Use a gradient for points outside the Mandelbrot set
-        unsigned char r = static_cast<unsigned char>(255 * sin(0.016 * iteration + 4));
-        unsigned char g = static_cast<unsigned char>(255 * sin(0.013 * iteration + 2));
-        unsigned char b = static_cast<unsigned char>(255 * sin(0.01 * iteration + 1));
-        color = Color{r, g, b, 255};
-    }*/
+    return (0.5f + V) * _Yellow;*/
 }
 
-float EquationShader(float x,float y){
-    //float value = x*x + y*y - 0.5;
-    float A = 1.0f, B = 1.0f, C = 0.0f, D = 0.0f;
-    float value = y - (A * std::sin(B * (x - C)) + D);
-    return value;
-}
+Color FragmentShader(const ShaderTriangle &triangle, float x, float y){
 
-
-Color TriangleFragment(const ShaderTriangle &triangle, float x, float y){
-
-    simd::float4 light = (simd_float4){0,0,0.5,0};
-    float dot = -simd::dot(triangle.normal, simd::normalize(light));
+    simd::float4 light = (simd_float4){0,0,1,0};
+    simd::float4 normal = simd::normalize(triangle.normal);
+    float dot = simd::dot(normal, simd::normalize(light));
     if(dot < 0){dot = 0;}
-
-    float z = (float)triangle.color.w / (1.0f - (float)triangle.color.w / 255.0f) / 255.0f;
-
-    float distanceSqrd = 1 + 2*((light.x - x)*(light.x - x) + (light.y - y)*(light.y - y) + (light.z - z)*(light.z - z));
-
-    simd::float4 color = triangle.color * dot / distanceSqrd;
+    dot = 0.05f + dot * 0.8f + 0.15f * std::max(2 * dot * dot - 1,0.0f);
+    simd::float4 color = Sample(triangle.uv, triangle.meshID);
+    color *= dot;
     return (Color)color;
 }
