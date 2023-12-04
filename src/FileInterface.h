@@ -19,6 +19,7 @@
       void CreateBMPFile_End();
       void CreateBMPHeader();
       public:
+      ~FileInterface();
       int resolution;
       void CreateBMPFile();
       void CreateBMPFileWithBuffer(ColorBuffer buffer);

@@ -809,7 +809,7 @@ obj/Debug/Shaders.o: src/Shaders.cpp src/Shaders.h src/RenderTypes.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_nl_item.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__bsd_locale_defaults.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg \
-  src/MiniFValue.h
+  src/MiniFValue.h src/Triangles.h
 
 src/Shaders.h:
 
@@ -2436,3 +2436,5 @@ src/RenderTypes.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg:
 
 src/MiniFValue.h:
+
+src/Triangles.h:

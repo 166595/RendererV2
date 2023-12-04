@@ -1,5 +1,8 @@
 #include "FileInterface.h"
 
+FileInterface::~FileInterface(){
+    CloseBMPFile();
+}
 
 void FileInterface::CreateBMPHeader(){
     int h_values[] = {66, 77, 138, 138, 124, (resolution >> 8), 256 - (resolution >> 8), 255, 255, 1, 32, 3, 64, 19, 11, 19, 11, 255, 255, 255, 255, 66, 71, 82, 115};
@@ -88,9 +91,9 @@ void FileInterface::CreateBMPFile(){
     CreateBMPFile_End();
 }
 
-void FileInterface::PrepBMPFileWithSize(unsigned int size){
-    CreateBMPFile_Start();
-    outFile.seekp(BMPHEAD);
+
+void FileInterface::CloseBMPFile(){
+    CreateBMPFile_End();
 }
 
 void FileInterface::SubmitColorBufferAsRow(ColorBuffer &buffer, unsigned int row){
@@ -98,11 +101,12 @@ void FileInterface::SubmitColorBufferAsRow(ColorBuffer &buffer, unsigned int row
     outFile.write(buffer.c, 4 * resolution);
 }
 
+void FileInterface::PrepBMPFileWithSize(unsigned int size){
+    CreateBMPFile_Start();
+    outFile.seekp(BMPHEAD);
+}
+
 void FileInterface::SubmitCharBufferAsRow(char *buffer, unsigned int length, unsigned int row){
     outFile.seekp(BMPHEAD + 4 * resolution * row);
     outFile.write(buffer, length);
-}
-
-void FileInterface::CloseBMPFile(){
-    CreateBMPFile_End();
 }

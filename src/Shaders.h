@@ -1,4 +1,5 @@
 #include "RenderTypes.h"
+#include "Triangles.h"
 #include <cmath>
 #include <iostream>
 #include <simd/simd.h>
@@ -19,6 +20,6 @@
 
    Vertex VertexShader(Vertex vertex);
    void FragmentShader(float x, float y, Color &color);
-   void TriangleFragment(float x, float y, ShaderTriangle triangle, Color &out);
+   Color TriangleFragment(const ShaderTriangle &triangle, float x, float y);
 
 #endif

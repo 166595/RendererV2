@@ -17,9 +17,30 @@
 
     /* Full Render Types ----------------------------------------------------------------------- */
 
+    #pragma pack(push, 1)
     typedef struct Color{
+
         unsigned char b,g,r,a;
+
+        Color():r(0),g(0),b(0),a(255){};
+
+        Color(float rIn, float gIn, float bIn, float aIn):r(rIn),g(gIn),b(bIn),a(aIn){};
+        Color(float rIn, float gIn, float bIn):r(rIn),g(gIn),b(bIn),a(255){};
+
+        Color(unsigned char rIn, unsigned char gIn, unsigned char bIn, unsigned char aIn):r(rIn),g(gIn),b(bIn),a(aIn){};
+        Color(unsigned char rIn, unsigned char gIn, unsigned char bIn):r(rIn),g(gIn),b(bIn),a(255){};
+
+        Color(char rIn, char gIn, char bIn, char aIn):r(rIn),g(gIn),b(bIn),a(aIn){};
+        Color(char rIn, char gIn, char bIn):r(rIn),g(gIn),b(bIn),a(255){};
+
+        Color(int rIn, int gIn, int bIn, int aIn):r(rIn),g(gIn),b(bIn),a(aIn){};
+        Color(int rIn, int gIn, int bIn):r(rIn),g(gIn),b(bIn),a(255){};
+
+        Color(simd::float4 color):r(color.x),g(color.y),b(color.z),a(color.w){};
+        Color(simd::float3 color):r(color.x),g(color.y),b(color.z),a(255){};
+
     }Color;
+    #pragma pack(pop)
 
     typedef struct{
         simd_float3 position;
@@ -36,26 +57,6 @@
         Vertex vertex[3];
         TriCoord BarycentricCoords;
     }Triangle;
-
-    typedef struct PreCalValue{
-        double o,x,y;
-    }PreCalValue;
-
-    typedef struct PreCalTriangle{
-        simd::float4 normal;
-        PreCalValue xBCoord;
-        PreCalValue yBCoord;
-        PreCalValue depth;
-        PreCalValue colorR;
-        PreCalValue colorG;
-        PreCalValue colorB;
-    }PreCalTriangle;
-
-    typedef struct ShaderTriangle{
-        simd::float4 normal;
-        simd::float4 color;
-    }ShaderTriangle;
-
 
 
     // --- Not Current --- //

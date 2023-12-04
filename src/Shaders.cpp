@@ -1,6 +1,8 @@
 
 #include "Shaders.h"
 
+#include <bit>
+
 Vertex VertexShader(Vertex vertex){
     return vertex;
 }
@@ -41,20 +43,16 @@ float EquationShader(float x,float y){
 }
 
 
-void TriangleFragment(float x, float y, ShaderTriangle triangle, Color &out){
+Color TriangleFragment(const ShaderTriangle &triangle, float x, float y){
 
-    simd::float4 light = (simd_float4){1,1,8,0};
-    light = simd::normalize(light);
+    simd::float4 light = (simd_float4){0,0,0.5,0};
+    float dot = -simd::dot(triangle.normal, simd::normalize(light));
+    if(dot < 0){dot = 0;}
 
-    float dot = -simd::dot(triangle.normal, light);
+    float z = (float)triangle.color.w / (1.0f - (float)triangle.color.w / 255.0f) / 255.0f;
 
-    if(dot < 0){
-        dot = 0;
-    }
+    float distanceSqrd = 1 + 2*((light.x - x)*(light.x - x) + (light.y - y)*(light.y - y) + (light.z - z)*(light.z - z));
 
-    simd::float4 color = triangle.color * dot;
-
-    out.r = color.x;
-    out.g = color.y;
-    out.b = color.z;
+    simd::float4 color = triangle.color * dot / distanceSqrd;
+    return (Color)color;
 }
