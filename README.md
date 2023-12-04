@@ -1,5 +1,5 @@
 # RendererV2
-
+>This is technically verison 2, as version 1 was spaghetti code.
 Was inspired and wanted to know how computers generate graphics, this program runs entirely on the CPU. _(Not fast)_
 
 ## Features include:
